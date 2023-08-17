@@ -24,3 +24,35 @@
 
  <p>각 입력에 대해 직각 삼각형이 맞다면 "right", 아니라면 "wrong"을 출력한다.</p>
 
+### 여려웠떤 점
+
+ <p>아래 코드는 왜 작동안하는지 모르겠다... 반례가 있는걸까? 근데 반례를 도무지 모르겠다 스트레스 받아</p>
+
+```
+while True:
+    x, y, z = map(int, input().split())
+    # 마지막 테스트일 경우 while 문 멈추기
+    if x == 0 and y == 0 and z == 0:
+        break
+    # 주어진 input 값에서 최대 값 및 해당 인덱스 찾기
+    if x != 0 and y != 0 and z != 0:
+        max_num = 0
+        lst = [x, y, z]
+        for i in range(3):
+            if lst[i] > max_num:
+                max_num = lst[i]
+                max_idx = i
+        # 최대 값에 해당하는 인덱스 분리해서 제곱하기
+        rest = 0
+        for i in range(3):
+            if i == max_idx:
+                heru = lst[i] ** 2
+            else:
+                rest += lst[i] ** 2
+        # 직각 삼각형 검사
+        if heru == rest:
+            print('rignt')
+        else:
+            print('wrong')
+```
+
