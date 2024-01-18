@@ -6,8 +6,6 @@ def solution(n, lost, reserve):
     lost = list(lost_set - res_set)
     # 안들고 온 학생 빼기
     n = n - len(lost)
-    # 여분 체육복 정렬
-    reserve.sort()
     for res in reserve:
         # 작은 것부터 앞 뒤로 빌려줄 수 있는지 확인 후
         # 빌려줄 수 있다면 전체 학생수에서 +
