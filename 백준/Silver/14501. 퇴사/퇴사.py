@@ -8,14 +8,11 @@ for i in range(N):
 
 max_profit = [0] * (N + 1)
 
-# 역순 진행
-for i in range(N - 1, -1, -1):
-    # 현재 상담이 퇴사 전까지 완료할 수 있는 경우
-    if i + plans[i][0] <= N:
-        # 현재 상담 할 경우와 안 할 경우 비교
-        max_profit[i] = max(plans[i][1] + max_profit[i + plans[i][0]], max_profit[i + 1])
-    # 현재 상담이 퇴사 전까지 완료할 수 없는 경우
-    else:
-        max_profit[i] = max_profit[i + 1]
+for i in range(1, N + 1):
+    for j in range(i):
+        # 현재 상담을 진행할 수 있는 경우
+        if j + plans[j][0] <= i:
+            # 현재 상담을 선택했을 때와 선택하지 않았을 때의 최대 이익 비교
+            max_profit[i] = max(max_profit[i], max_profit[j] + plans[j][1])
 
-print(max_profit[0])
+print(max_profit[N])
