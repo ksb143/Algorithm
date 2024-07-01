@@ -57,33 +57,41 @@ class MinHeap {
   }
 }
 
-function solution(jobs) {
-  const minHeap = new MinHeap();
-  jobs.sort((a, b) => a[0] - b[0]);
 
-  let length = jobs.length;
-  let totalTime = 0;
-  let currentTime = 0;
-  let i = 0;
+function solution(jobs) {
+  const minHeap = new MinHeap()
+  jobs.sort((a, b) => {
+    if (a[0] === b[0]) {
+      return a[1] - b[1];
+    }
+    return a[0] - b[0];
+  });
+  let length = jobs.length
+  let totalTime = 0
+  let end = 0
+  let i = 0
 
   while (i < length || minHeap.size > 0) {
-    // 현재 시간에 도달한 작업들을 힙에 추가
-    while (i < length && jobs[i][0] <= currentTime) {
-      minHeap.heappush([jobs[i][1], jobs[i][0]]);
-      i++;
+    // 기간 내에 있는 것 넣기
+    // 파이썬처럼 체인 비교가 안된다!!!
+    while (i < length && jobs[i][0] <= end) {
+      minHeap.heappush([jobs[i][1], jobs[i][0]])
+      i++
     }
 
-    // 힙이 비어 있으면 다음 작업까지 시간을 이동
+    // 힙이 비면 다음 작업까지 시간 이동
     if (minHeap.size === 0) {
-      currentTime = jobs[i][0];
+      if (i < length) {
+        end = jobs[i][0]
+      }
     } else {
-      const [jobDuration, jobStart] = minHeap.heappop();
-      currentTime += jobDuration;
-      totalTime += currentTime - jobStart;
+      const [jobTime, jobStart] = minHeap.heappop()
+      end += jobTime
+      totalTime += end - jobStart
     }
   }
 
-  return Math.floor(totalTime / length);
+  return Math.floor(totalTime / length)
 }
 
-console.log(solution([[0, 3], [1, 9], [2, 6]])); // Expected output: 9
+console.log(solution([[0, 3], [1, 9], [2, 6]]))
