@@ -16,16 +16,20 @@ def is_prime(check):
 
 while True:
     number = input().strip()
+    ans = 0
     if number == '0':
         break
-    ans = 0
     l = len(number)
     for i in range(l):
+        cnt = 1
         for j in range(i, l):
+            # 소수 범위 넘어가면 잴 필요 없음
+            if (cnt > 5):
+                break
             check = int(number[i:j+1])
-            # 범위 넘어가면 커트
-            if check > 100000:
+            if (check > 100000):
                 break
             if (is_prime(check)):
-                ans = max(ans, check)
+                if (ans < check):
+                    ans = check
     print(ans)
