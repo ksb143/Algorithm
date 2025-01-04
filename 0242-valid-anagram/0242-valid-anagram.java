@@ -5,39 +5,26 @@ import java.util.*;
 
 class Solution {
     public boolean isAnagram(String s, String t) {
-        HashMap<Character, Integer> mapS = new HashMap<>();
-        HashMap<Character, Integer> mapT = new HashMap<>();
+        if (s.length() != t.length()) {
+            return false;
+        }
 
-        for (char x : s.toCharArray()) {
-            if (mapS.containsKey(x)) {
-                mapS.put(x, mapS.get(x) + 1);
-            } else {
-                mapS.put(x, 1);
+        HashMap<Character, Integer> countMap = new HashMap<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            char sChar = s.charAt(i);
+            char tChar = t.charAt(i);
+
+            countMap.put(sChar, countMap.getOrDefault(sChar, 0) + 1);
+            countMap.put(tChar, countMap.getOrDefault(tChar, 0) - 1);
+        }
+
+        for (int cnt : countMap.values()) {
+            if (cnt != 0) {
+                return false;
             }
         }
 
-        for (char y : t.toCharArray()) {
-            if (mapT.containsKey(y)) {
-                mapT.put(y, mapT.get(y) + 1);
-            } else {
-                mapT.put(y, 1);
-            }
-        }
-        
-        boolean flag = true;
-        
-        for (Map.Entry<Character, Integer> entry : mapS.entrySet()) {
-            if (entry.getValue() != mapT.get(entry.getKey())) {
-                flag = false;
-            }
-        }
-
-        for (Map.Entry<Character, Integer> entry : mapT.entrySet()) {
-            if (entry.getValue() != mapS.get(entry.getKey())) {
-                flag = false;
-            }
-        }
-
-        return flag;
+        return true;
     }
 }
