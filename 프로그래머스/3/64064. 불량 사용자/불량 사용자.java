@@ -1,60 +1,45 @@
 import java.util.*;
 
 class Solution {
-        public static boolean isSame(String winner, String cheater) {
-        // 길이가 똑같지 않으므로 false return
-        if (winner.length() != cheater.length()) {
-            return false;
-        }
-        // 글자를 하나씩 살펴보면서 똑같은지 확인
-        for (int i = 0; i < winner.length(); i++) {
-            // 같지 않다면
-            if(winner.charAt(i) != cheater.charAt(i)) {
-                // cheater 글자가 *면 넘어가기
-                if (cheater.charAt(i) == '*') {
-                    continue;
-                }
-                return false;
-            }
-        }
-        return true;
-    }
-    
-    public static void comb(ArrayList<ArrayList<Integer>> sameCases, int currIdx, List<Integer> currComb, HashSet<HashSet<Integer>> uniqueComb) {
-        if (currIdx == sameCases.size()) {
-            HashSet<Integer> currSet = new HashSet<>(currComb);
-            if (currSet.size() == sameCases.size()) {
-                uniqueComb.add(new HashSet<>(currSet));
-            }
+    private static void comb(ArrayList<ArrayList<Integer>> matchId, Set<Integer> set, int idx, int n, Set<String> resultSet) {
+        if (set.size() == n) {
+            List<Integer> sorted = new ArrayList<>(set);
+            Collections.sort(sorted);
+            resultSet.add(sorted.toString());
             return;
         }
 
-        ArrayList<Integer> currList = sameCases.get(currIdx);
-        for (Integer num : currList) {
-            currComb.add(num);
-            comb(sameCases, currIdx + 1, currComb, uniqueComb);
-            currComb.remove(currComb.size() - 1);
+        for (Integer id : matchId.get(idx)) {
+            if (!set.contains(id)) {
+                set.add(id);
+                comb(matchId, set, idx + 1, n,resultSet);
+                set.remove(id);  // 백트래킹
+            }
+
         }
     }
-    
+
     public int solution(String[] user_id, String[] banned_id) {
-        ArrayList<ArrayList<Integer>> sameCases = new ArrayList<>();
+        // 정규표현식으로 교체
         for (int i = 0; i < banned_id.length; i++) {
-            ArrayList<Integer> innerArr = new ArrayList<>();
+            banned_id[i] = banned_id[i].replace("*", ".");
+        }
+        // banned_id랑 똑같은 user_id 담을 리스트
+        ArrayList<ArrayList<Integer>> matchId = new ArrayList<>();
+        for (int i = 0; i < banned_id.length; i++) {
+            matchId.add(new ArrayList<>());
+        }
+        // 돌아가면서 똑같은 아이디 idx 넣기
+        for (int i = 0; i < banned_id.length; i++) {
             for (int j = 0; j < user_id.length; j++) {
-                // 둘이 똑같은 거면 j를 넣기
-                if (isSame(user_id[j], banned_id[i])) {
-                    innerArr.add(j);
+                if (user_id[j].matches(banned_id[i])) {
+                    matchId.get(i).add(j);
                 }
             }
-            sameCases.add(innerArr);
         }
-
-        HashSet<HashSet<Integer>> uniqueComb = new HashSet<>();
-        comb(sameCases, 0, new ArrayList<Integer>(), uniqueComb);
-
-
-        int answer = uniqueComb.size();
-        return answer;
+        HashSet<Integer> set = new HashSet<>();
+        HashSet<String> resultSet = new HashSet<>();
+        comb(matchId, set, 0, banned_id.length, resultSet);
+        return resultSet.size();
     }
 }
