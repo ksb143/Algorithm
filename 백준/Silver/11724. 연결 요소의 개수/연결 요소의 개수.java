@@ -3,9 +3,6 @@ import java.io.*;
 
 public class Main {
     private static int bfs(int num, List<List<Integer>> adjLst, boolean[] visited ) {
-        if (visited[num]) {
-            return 0;
-        }
         visited[num] = true;
         Queue<Integer> queue = new LinkedList<>();
         queue.offer(num);
@@ -43,6 +40,9 @@ public class Main {
         int count = 0;  // 연결 요소 개수
         boolean[] visited = new boolean[N + 1];
         for (int i = 1; i <= N; i++) {
+            if (visited[i]) {
+                continue;
+            }
             count += bfs(i, adjLst, visited);
         }
         System.out.println(count);
