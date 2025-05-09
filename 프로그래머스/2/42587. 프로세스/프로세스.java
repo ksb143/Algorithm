@@ -2,31 +2,30 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] priorities, int location) {
-        // 큐를 만들고 우선순위, index를 큐에 넣기
-        Queue<int[]> queue = new LinkedList<>();
+        Queue<int[]> q = new LinkedList<>();
+        int[] priCnt = new int[10];
+        int maxVal = 0;
         for (int i = 0; i < priorities.length; i++) {
-            queue.offer(new int[]{priorities[i], i});
+            q.offer(new int[] {priorities[i], i});
+            priCnt[priorities[i]] += 1;
         }
-        int cnt = 0;
+        int idx = 9;
+        int count = 0;
         int answer = 0;
-        while (!queue.isEmpty()) {
-            // 우선순위를 반복문을 돌면서 더 높은 것이 있는지 확인
-            int[] check = queue.poll();
-            boolean flag = true;
-            for (int[] rest : queue) {
-                if (rest[0] > check[0]) {
-                    flag = false;
-                    break;
-                }
+        while (!q.isEmpty()) {
+            while (priCnt[idx] == 0) {
+                idx -= 1;
             }
-            if (flag) {  // 우선순위가 반복문 돌면서 더 높은 것이 없다면
-                cnt += 1;
-                if (check[1] == location) {
-                    answer = cnt;
+            int[] vals = q.poll();
+            if (vals[0] != idx) {
+                q.offer(vals);  // 해당 값이 우선순위가 아니면 다시 집어넣기
+            } else {
+                count++;
+                if (vals[1] == location) {
+                    answer = count;
                     break;
                 }
-            } else {  // 우선순위가 반복문 돌면서 더 높은 것이 있다면
-                queue.offer(check);
+                priCnt[idx] -= 1;
             }
         }
         return answer;
