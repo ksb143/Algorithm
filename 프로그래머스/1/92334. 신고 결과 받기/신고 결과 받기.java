@@ -2,53 +2,40 @@ import java.util.*;
 
 class Solution {
     public int[] solution(String[] id_list, String[] report, int k) {
-        HashMap<String, HashSet> reportList = new HashMap<>();
-        HashMap<String, Integer> reportNum = new HashMap<>();
-        HashMap<String, Integer> mailNum = new HashMap<>();
-        // 맵에 유저 이름 넣기
+        Map<String, Set<String>> reportedByMap = new HashMap<>();  // key: 피신고자, value: 신고자 목록
+        Map<String, Integer> mailCount = new HashMap<>();
+
         for (String id : id_list) {
-            HashSet<String> set = new HashSet<>();
-            reportList.put(id, set);
-            reportNum.put(id, 0);
-            mailNum.put(id, 0);
+            reportedByMap.put(id, new HashSet<>());
+            mailCount.put(id, 0);
         }
-        // 신고 맵에 부여
-        for (String r : report) {
-            String[] reportArr = r.split(" ");
-            String reporter = reportArr[0];  // 신고자
-            String user = reportArr[1];  // 피신고자
 
-            HashSet<String> reportedSet = reportList.get(reporter);
-            if (reportedSet.contains(user)) {
-                continue;
-            }
+        // 1. 중복 제거
+        Set<String> reportSet = new HashSet<>(Arrays.asList(report));
 
-            reportedSet.add(user);  // 해당 사람 세트에 추가
-            reportList.put(reporter, reportedSet);  // 맵 매칭
-            reportNum.put(user, reportNum.get(user) + 1);  // 사람 수 늘리기
-
+        // 2. 신고 정보 기록
+        for (String r : reportSet) {
+            String[] parts = r.split(" ");
+            String reporter = parts[0];
+            String reported = parts[1];
+            reportedByMap.get(reported).add(reporter);
         }
-        // 신고횟수 둘러보기
-        for (Map.Entry<String, Integer> entry1 : reportNum.entrySet()) {
-            int val = entry1.getValue();
-            // 신고 개수가 k개 이상이면
-            if (val >= k) {
-                for (Map.Entry<String, HashSet> entry2 : reportList.entrySet()) {
-                    // 기준 이상이 해당 엔트리에 포함되어 있으면
-                    if (entry2.getValue().contains(entry1.getKey())) {
-                        mailNum.put(entry2.getKey(), mailNum.get(entry2.getKey()) + 1);  // 발송받을 사람 +1
-                    }
+
+        // 3. k 이상 신고된 유저의 신고자에게 메일 발송
+        for (String reported : reportedByMap.keySet()) {
+            Set<String> reporters = reportedByMap.get(reported);
+            if (reporters.size() >= k) {
+                for (String reporter : reporters) {
+                    mailCount.put(reporter, mailCount.get(reporter) + 1);
                 }
             }
         }
-        
+
+        // 4. 결과 배열 만들기
         int[] answer = new int[id_list.length];
         for (int i = 0; i < id_list.length; i++) {
-            String id = id_list[i];
-            answer[i] = mailNum.get(id);
+            answer[i] = mailCount.get(id_list[i]);
         }
-
-
 
         return answer;
     }
