@@ -10,28 +10,16 @@ public class Main {
             this.fileName = fileName;
             this.isFile = isFile;
         }
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof File)) return false;
-            File file = (File) o;
-            return isFile == file.isFile && Objects.equals(fileName, file.fileName);
-        }
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(fileName, isFile);
-        }
     }
 
-    private static int[] bfs(HashMap<File, List<File>> map, String folder) {
+    private static int[] bfs(HashMap<String, List<File>> map, String folder) {
         HashSet<String> set = new HashSet<>();
         int cnt = 0;
-        File sf = new File(folder, false);
-        Queue<File> q = new LinkedList<>();
-        q.offer(sf);
+        Queue<String> q = new LinkedList<>();
+        q.offer(folder);
         while (!q.isEmpty()) {
-            File cf = q.poll();
+            String cf = q.poll();
             if (!map.containsKey(cf)) {
                 continue;
             }
@@ -40,7 +28,7 @@ public class Main {
                     set.add(f.fileName);
                     cnt++;
                 } else {  // 폴더면 큐에 추가
-                    q.add(f);
+                    q.add(f.fileName);
                 }
             }
         }
@@ -52,11 +40,10 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
-        HashMap<File, List<File>> map = new HashMap<>();
+        HashMap<String, List<File>> map = new HashMap<>();
         for (int i = 0; i < N + M; i++) {
             st = new StringTokenizer(br.readLine());
             String P = st.nextToken();  // 상위 폴더
-            File pf = new File(P, false);
             String F = st.nextToken();  // 폴더 혹은 파일 이름
             int C = Integer.parseInt(st.nextToken());  // 폴더면 1, 파일이면 0
             File cf;
@@ -65,7 +52,7 @@ public class Main {
             } else {
                 cf = new File(F, true);
             }
-            map.computeIfAbsent(pf, k -> new ArrayList<>()).add(cf);
+            map.computeIfAbsent(P, k -> new ArrayList<>()).add(cf);
         }
 
 
