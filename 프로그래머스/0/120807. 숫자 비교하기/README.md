@@ -2,6 +2,12 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120807) 
 
+## 💭 풀이 기록
+
+**상태:** ✅ 혼자 해결
+
+**느낀 점:** if 문으로 간단히 완료
+
 ### 성능 요약
 
 메모리: 74 MB, 시간: 0.02 ms
