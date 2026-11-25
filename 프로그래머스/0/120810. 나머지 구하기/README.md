@@ -2,6 +2,12 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120810) 
 
+## 💭 풀이 기록
+
+**상태:** ✅ 혼자 해결
+
+**느낀 점:** ₩%₩를 활용해서 쉽게 풀었습니다.
+
 ### 성능 요약
 
 메모리: 76.5 MB, 시간: 0.02 ms
