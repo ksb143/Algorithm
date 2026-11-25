@@ -2,6 +2,39 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120811) 
 
+## 💭 풀이 기록
+
+**상태**: ✅ 혼자 해결
+
+**느낀 점**
+
+1. 자바의 변수와 메소드를 구분하는 것이 필요하다. 
+- 어디에 소속되어 있는가? → static(클래스에 소속) vs instance(객체에 소속)
+- 어떤 역할을 하는가? → 필드=변수(데이터를 저장) vs 메소드=함수(동작을 수행)
+
+| 구분 | 호출 방식 | 예시 |
+| :--- | :--- | :--- |
+| static 필드 | 클래스.변수 | `Math.PI` |
+| static 메소드 | 클래스.메소드() | `Arrays.sort(array)` |
+| 인스턴스 필드 | 객체.변수 | `array.length` |
+| 인스턴스 메소드 | 객체.메소드() | `str.length()` |
+
+예시 사례
+```
+array.length   // 배열: 인스턴스 필드
+str.length()   // 문자열: 인스턴스 메소드
+list.size()    // 리스트: 인스턴스 메소드
+Math.PI        // static 필드
+Math.abs(-10)  // static 메소드
+```
+
+2. 공식문서 보는 순서 (헷갈리는 경우 `Method Summary`를 찾아보자!)
+- Field Summary : 어떤 필드를 제공하는가?
+- Method Summary : 어떤 메소드를 제공하는가?
+- static 여부 : 클래스에서 호출하는가, 객체에서 호출하는가?
+- Parameters : 어떤 매개변수를 전달해야 하는가?
+- Returns : 어떤 값을 반환하는가?
+
 ### 성능 요약
 
 메모리: 77.9 MB, 시간: 3.91 ms
