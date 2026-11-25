@@ -2,6 +2,12 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/120809) 
 
+## 💭 풀이 기록
+
+**상태:** ✅ 혼자 해결
+
+**느낀 점:** 반복문을 활용해서 두 배를 했습니다!
+
 ### 성능 요약
 
 메모리: 78.1 MB, 시간: 0.03 ms
